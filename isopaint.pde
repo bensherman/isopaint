@@ -47,7 +47,7 @@ void draw() {
   }
 }
 
-void mouseDragged() {
+void mousePressed() {
   for (int i = 0; i < triangles.size (); i++) {
     Triangle t = triangles.get(i);
     if (t.cursorInside()) {
