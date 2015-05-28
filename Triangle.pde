@@ -1,29 +1,32 @@
 class Triangle {
-  int ax;
-  int ay;
-  int bx;
-  int by;
-  int cx;
-  int cy;
+  float ax;
+  float ay;
+  float bx;
+  float by;
+  float cx;
+  float cy;
+  boolean filled = true;
+  color fillColor = 255;
 
-  Triangle (int tempAX, int tempAY, int tempBX, int tempBY, int tempCY, int tempCX){
+  Triangle (float tempAX, float tempAY, float tempBX, float tempBY, float tempCX, float tempCY) {
     ax = tempAX;
     ay = tempAY;
     bx = tempBX;
     by = tempBY;
     cx = tempCX;
     cy = tempCY;
+    println("new triangle: ", ax, ay, bx, by, cx, cy);
   }
-  
+
   float area() {  
     return area(ax, ay, bx, by, cx, cy);
   }
 
-  float area(int ax, int ay, int bx, int by, int cx, int cy) {
-    int ta = ax - cx;
-    int tb = ay - cy;
-    int tc = bx - cx;
-    int td = by - cy;
+  float area(float ax, float ay, float bx, float by, float cx, float cy) {
+    float ta = ax - cx;
+    float tb = ay - cy;
+    float tc = bx - cx;
+    float td = by - cy;
     float area = (.5 * (abs((ta*td) - (tb*tc))));
     return area;
   }
@@ -39,7 +42,26 @@ class Triangle {
     return (ta + tb + tc <= area());
   }
 
+  void darken() {
+    fillColor -= 85;
+    if (fillColor < 0) {
+      fillColor=0;
+    }
+  }
+  
+  void lighten() {
+    fillColor += 85;
+    if (fillColor > 255) {
+      fillColor=255;
+    }
+  }
+  
   void display() {
+    if (filled) {
+      fill(fillColor);
+    } else {
+      noFill();
+    }
     triangle(ax, ay, bx, by, cx, cy);
   }
 }
