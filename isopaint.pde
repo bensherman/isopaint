@@ -1,11 +1,23 @@
 ArrayList<Triangle> triangles;
+int originalHeight;
+int originalWidth;
+color draggedColor = 0;
+float triangleRatio = 10;
 
 void setup() {
   noSmooth();
   noStroke();
-  size(1000, 1000);
+  size(500, 500);
+  frame.setResizable(true);
+  triangleRatio = 10;
+  createGrid(triangleRatio);
+  originalHeight = height;
+  originalWidth = width;
+}
+
+void createGrid(float newTriangleRatio) {
   triangles = new ArrayList<Triangle>();
-  float triangleSize=height/10;
+  float triangleSize=height/newTriangleRatio;
   float offset=triangleSize/2;
   float ax, ay, bx, by, cx, cy;
   float x = -triangleSize;
@@ -38,17 +50,22 @@ void setup() {
     }
     y += triangleSize;
   }
+  demoTriangle();
 }
 
 void draw() {
   background(100, 100, 100);
+  if (originalWidth != width || originalHeight != height) {
+    println("resizing");
+    createGrid(triangleRatio);
+    originalWidth = width;
+    originalHeight = height;
+  }  
   for (int i = 0; i < triangles.size (); i++) {
     Triangle t = triangles.get(i);
     t.display();
   }
 }
-
-color draggedColor = 0;  // how do I not make this a global
 
 void mousePressed() {
   for (int i = 0; i < triangles.size (); i++) {
@@ -73,3 +90,33 @@ void mouseDragged() {
   }
 }
 
+void keyPressed() {
+  if (key == 's' || key ==  'S') {
+    selectOutput("filename to save to (png will be appended): ", "fileSelected");
+  }
+  if (key == '-') {
+    triangleRatio *= 1.1;
+    createGrid(triangleRatio);
+  }
+  if (key == '+') {
+    triangleRatio *= .9;
+    if (triangleRatio < .5){
+      triangleRatio = .5;
+    } else {
+      createGrid(triangleRatio);
+    }
+  }
+}
+
+void fileSelected(File selection) {
+  if ( selection != null ) {
+    save(selection.getAbsolutePath() + ".png");
+  }
+}
+
+void demoTriangle(){
+  float trianglesWide = width/triangleRatio;
+  float trianglesHigh = height/triangleRatio;
+  Triangle exampleTriangle = triangles.get(3);
+  exampleTriangle.cycleColorsReverse();
+}

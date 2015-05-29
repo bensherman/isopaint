@@ -68,14 +68,12 @@ class Triangle {
   void cycleColors() {
     brushIndex++;
     brushIndex %= colors.size();
-    println("++ ", brushIndex);
   }
 
   void cycleColorsReverse() {
     brushIndex--;
     if (brushIndex < 0) {
       brushIndex = colors.size() + brushIndex;
-      println("-- ", brushIndex);
     }
   }
 
