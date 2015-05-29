@@ -1,3 +1,4 @@
+
 class Triangle {
   float ax;
   float ay;
@@ -6,7 +7,8 @@ class Triangle {
   float cx;
   float cy;
   boolean filled = true;
-  color fillColor = 255;
+  color brushIndex;
+  ArrayList<Integer> colors;
 
   Triangle (float tempAX, float tempAY, float tempBX, float tempBY, float tempCX, float tempCY) {
     ax = tempAX;
@@ -16,6 +18,12 @@ class Triangle {
     cx = tempCX;
     cy = tempCY;
     println("new triangle: ", ax, ay, bx, by, cx, cy);
+    colors = new ArrayList<Integer>();
+    colors.add(color(0)); //black
+    colors.add(color(100)); //dark grey
+    colors.add(color(200)); //light grey
+    colors.add(color(255)); //white
+    brushIndex = colors.size() - 1;
   }
 
   float area() {  
@@ -42,23 +50,39 @@ class Triangle {
     return (ta + tb + tc <= area());
   }
 
+
   void darken() {
-    fillColor -= 85;
-    if (fillColor < 0) {
-      fillColor=0;
+    brushIndex--;
+    if (brushIndex < 0) {
+      brushIndex = 0;
     }
   }
-  
+
   void lighten() {
-    fillColor += 85;
-    if (fillColor > 255) {
-      fillColor=255;
+    brushIndex++;
+    if (brushIndex > colors.size() - 1) {
+      brushIndex = colors.size() - 1;
     }
   }
-  
+
+  void cycleColors() {
+    brushIndex++;
+    brushIndex %= colors.size();
+    println("++ ", brushIndex);
+  }
+
+  void cycleColorsReverse() {
+    brushIndex--;
+    if (brushIndex < 0) {
+      brushIndex = colors.size() + brushIndex;
+      println("-- ", brushIndex);
+    }
+  }
+
+
   void display() {
     if (filled) {
-      fill(fillColor);
+      fill(colors.get(brushIndex));
     } else {
       noFill();
     }

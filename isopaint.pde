@@ -1,8 +1,9 @@
 ArrayList<Triangle> triangles;
+
 void setup() {
   noSmooth();
   noStroke();
-  size(500, 500);
+  size(1000, 1000);
   triangles = new ArrayList<Triangle>();
   float triangleSize=height/10;
   float offset=triangleSize/2;
@@ -40,22 +41,34 @@ void setup() {
 }
 
 void draw() {
-  background(170, 170, 170);
+  background(100, 100, 100);
   for (int i = 0; i < triangles.size (); i++) {
     Triangle t = triangles.get(i);
     t.display();
   }
 }
 
+color draggedColor = 0;  // how do I not make this a global
+
 void mousePressed() {
   for (int i = 0; i < triangles.size (); i++) {
     Triangle t = triangles.get(i);
     if (t.cursorInside()) {
-      if (mouseButton == LEFT) {
-        t.darken();
-      } else { 
-        t.lighten();
+      if (mouseButton == RIGHT && !keyPressed) {
+        t.cycleColors();
+      } else if (mouseButton == LEFT && !keyPressed) {
+        t.cycleColorsReverse();
       }
+      draggedColor = t.brushIndex;
+    }
+  }
+}
+
+void mouseDragged() {
+  for (int i = 0; i < triangles.size (); i++) {
+    Triangle t = triangles.get(i);
+    if (t.cursorInside() && mouseButton == LEFT && keyCode == SHIFT) {
+      t.brushIndex = draggedColor;
     }
   }
 }
