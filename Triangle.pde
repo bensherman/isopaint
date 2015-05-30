@@ -17,7 +17,9 @@ class Triangle {
     by = tempBY;
     cx = tempCX;
     cy = tempCY;
-    println("new triangle: ", ax, ay, bx, by, cx, cy);
+    if (debug) {
+      println("new triangle: ", ax, ay, bx, by, cx, cy);
+    }
     colors = new ArrayList<Integer>();
     colors.add(color(0)); //black
     colors.add(color(100)); //dark grey
@@ -50,6 +52,12 @@ class Triangle {
     return (ta + tb + tc <= area());
   }
 
+  boolean centerTriangle() {
+    float ta = area(width/2, height/2, bx, by, cx, cy);
+    float tb = area(ax, ay, width/2, height/2, cx, cy);
+    float tc = area(ax, ay, bx, by, width/2, height/2);
+    return (ta + tb + tc <= area());
+  }
 
   void darken() {
     brushIndex--;
@@ -76,7 +84,6 @@ class Triangle {
       brushIndex = colors.size() + brushIndex;
     }
   }
-
 
   void display() {
     if (filled) {

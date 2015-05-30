@@ -4,6 +4,8 @@ int originalWidth;
 color draggedColor = 0;
 float triangleRatio = 10;
 
+boolean debug = false;
+
 void setup() {
   noSmooth();
   noStroke();
@@ -56,7 +58,9 @@ void createGrid(float newTriangleRatio) {
 void draw() {
   background(100, 100, 100);
   if (originalWidth != width || originalHeight != height) {
-    println("resizing");
+    if (debug) {
+      println("resizing");
+    }
     createGrid(triangleRatio);
     originalWidth = width;
     originalHeight = height;
@@ -84,23 +88,35 @@ void mousePressed() {
 void mouseDragged() {
   for (int i = 0; i < triangles.size (); i++) {
     Triangle t = triangles.get(i);
-    if (t.cursorInside() && mouseButton == LEFT && keyCode == SHIFT) {
+    if (t.cursorInside() && mouseButton == LEFT && keyPressed && keyCode == SHIFT) {
       t.brushIndex = draggedColor;
     }
   }
 }
 
 void keyPressed() {
+  if (debug) {
+    println(key);
+  }  
   if (key == 's' || key ==  'S') {
     selectOutput("filename to save to (png will be appended): ", "fileSelected");
-  }
-  if (key == '-') {
+  } else if (key == '-') {
     triangleRatio *= 1.1;
-    createGrid(triangleRatio);
+    if (debug) {
+      println("-", triangleRatio);
+    }    
+    if (triangleRatio > height/20) {
+      triangleRatio = height/20;
+    } else {
+      createGrid(triangleRatio);
+    }
   }
   if (key == '+') {
+    if (debug) {
+      println("+", triangleRatio);
+    }    
     triangleRatio *= .9;
-    if (triangleRatio < .5){
+    if (triangleRatio < .5) {
       triangleRatio = .5;
     } else {
       createGrid(triangleRatio);
@@ -114,9 +130,12 @@ void fileSelected(File selection) {
   }
 }
 
-void demoTriangle(){
-  float trianglesWide = width/triangleRatio;
-  float trianglesHigh = height/triangleRatio;
-  Triangle exampleTriangle = triangles.get(3);
-  exampleTriangle.cycleColorsReverse();
+void demoTriangle() {
+  for (int i = 0; i < triangles.size (); i++) {
+    Triangle t = triangles.get(i);
+    if (t.centerTriangle()) {
+      t.cycleColorsReverse();
+    }
+  }
 }
+
