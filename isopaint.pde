@@ -122,6 +122,21 @@ void keyPressed() {
       createGrid(triangleRatio);
     }
   }
+  if (key == 'r') {
+    for (int i = 0; i < triangles.size (); i++) {
+      triangles.get(i).turnRed();
+    }
+  }  
+  if (key == 'g') {
+    for (int i = 0; i < triangles.size (); i++) {
+      triangles.get(i).turnGreen();
+    }
+  }
+  if (key == 'b') {
+    for (int i = 0; i < triangles.size (); i++) {
+      triangles.get(i).turnBlue();
+    }
+  }
 }
 
 void fileSelected(File selection) {

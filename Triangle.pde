@@ -28,6 +28,25 @@ class Triangle {
     brushIndex = colors.size() - 1;
   }
 
+  void turnRed() {
+    colors.set(0, color(#801916));
+    colors.set(1, color(#AA3C39));
+    colors.set(2, color(#D46D6A));
+    colors.set(3, color(#FFACAA));
+  }
+  void turnGreen() {
+    colors.set(0, color(#3A5000));
+    colors.set(1, color(#5D7814));
+    colors.set(2, color(#83A136));
+    colors.set(3, color(#DBF1A1));
+  }
+  void turnBlue() {
+    colors.set(0, color(#123552));
+    colors.set(1, color(#2A4F6E));
+    colors.set(2, color(#496C89));
+    colors.set(3, color(#718DA5));
+  }
+
   float area() {  
     return area(ax, ay, bx, by, cx, cy);
   }
