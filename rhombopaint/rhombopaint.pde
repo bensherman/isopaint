@@ -1,13 +1,12 @@
 RhombusGrid grid = new RhombusGrid();
-float offset = 10;
+float offset = 30;
 int largestWidth;
 int largestHeight;
 float smallestOffset = offset;
-boolean debug = true;
+boolean debug = false;
 
 void setup() {
   noSmooth();
-  noStroke();
   size(500, 500);
   largestWidth = width;
   largestHeight = height;
@@ -47,5 +46,18 @@ void keyPressed() {
   if (key == 'd') {
     debug = !debug;
   }
+  if (key == 'r') {
+    grid.turnRed();
+  }
+  if (key == 'g') {
+    grid.turnGreen();
+  }
+  if (key == 'b') {
+    grid.turnBlue();
+  }
+}
+
+void mousePressed() {
+  grid.mouseClick();
 }
 
