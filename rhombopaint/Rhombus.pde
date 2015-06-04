@@ -31,29 +31,33 @@ class Rhombus {
     brushIndexLeft = colors.size() - 1;
     brushIndexRight = colors.size() - 1;
   }
+
   void turnRed() {
     colors.set(0, color(#801916));
     colors.set(1, color(#AA3C39));
     colors.set(2, color(#D46D6A));
     colors.set(3, color(#FFACAA));
   }
+
   void turnGreen() {
     colors.set(0, color(#3A5000));
     colors.set(1, color(#5D7814));
     colors.set(2, color(#83A136));
     colors.set(3, color(#DBF1A1));
   }
+
   void turnBlue() {
     colors.set(0, color(#123552));
     colors.set(1, color(#2A4F6E));
     colors.set(2, color(#496C89));
     colors.set(3, color(#718DA5));
   }
+
   void cycleColorsLeft() {
     brushIndexLeft++;
     brushIndexLeft %= colors.size();
   }
-  
+
   void cycleColorsRight() {
     brushIndexRight++;
     brushIndexRight %= colors.size();
@@ -65,7 +69,7 @@ class Rhombus {
       brushIndexRight = colors.size() + brushIndexRight;
     }
   }
-  
+
   void cycleColorsReverseLeft() {
     brushIndexLeft--;
     if (brushIndexLeft < 0) {
@@ -102,16 +106,16 @@ class Rhombus {
     /* figure out if a point is inside of a triangle.
      make a triangle out each of the vertexes and the x,y of the point to be discovered.
      sum area.  if equal to area of main triangle, point is inside.  if greater, it is not.  */
-    float a = area(mouseX,mouseY, leftX, leftY, bottomX, bottomY);
-    float b = area(topX, topY, mouseX,mouseY, bottomX, bottomY);
-    float c = area(topX, topY, leftX, leftY, mouseX,mouseY);
+    float a = area(pmouseX, pmouseY, leftX, leftY, bottomX, bottomY);
+    float b = area(topX, topY, pmouseX, pmouseY, bottomX, bottomY);
+    float c = area(topX, topY, leftX, leftY, pmouseX, pmouseY);
     return (a + b + c <= areaLeft());
   }  
 
   boolean insideRight() {
-    float a = area(mouseX,mouseY, rightX, rightY, bottomX, bottomY);
-    float b = area(topX, topY, mouseX,mouseY, bottomX, bottomY);
-    float c = area(topX, topY, rightX, rightY, mouseX,mouseY);
+    float a = area(pmouseX, pmouseY, rightX, rightY, bottomX, bottomY);
+    float b = area(topX, topY, pmouseX, pmouseY, bottomX, bottomY);
+    float c = area(topX, topY, rightX, rightY, pmouseX, pmouseY);
     return (a + b + c <= areaRight());
   }
 

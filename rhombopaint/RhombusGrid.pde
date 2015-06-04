@@ -6,7 +6,7 @@ class RhombusGrid {
   void createGrid(float tempOffset) {
     offset = tempOffset;
     xCount = int(((largestWidth / smallestOffset) / 4.0) + 2);
-    yCount = int((largestHeight / smallestOffset) + 2);
+    yCount = int((largestHeight / smallestOffset) + 3);
     println("creating grid", xCount, yCount);
     myGrid = new Rhombus[xCount][yCount];
     for (int column = 0; column < yCount; column++) {
@@ -55,6 +55,7 @@ class RhombusGrid {
   }
 
   void mouseClick() {
+    println("clicked!");
     for (int column = 0; column < yCount; column++) {
       for (int row = 0; row < xCount; row++) {
         if (myGrid[row][column].insideRight()) {
@@ -63,13 +64,36 @@ class RhombusGrid {
           } else if (mouseButton == RIGHT) {
             myGrid[row][column].cycleColorsReverseRight();
           }
-        }
-        if (myGrid[row][column].insideLeft()) {
+        } else if (myGrid[row][column].insideLeft()) {
           if (mouseButton == LEFT) {
             myGrid[row][column].cycleColorsLeft();
           } else if (mouseButton == RIGHT) {
             myGrid[row][column].cycleColorsReverseLeft();
           }
+        }
+      }
+    }
+  }
+
+  void mousePress() {
+    for (int column = 0; column < yCount; column++) {
+      for (int row = 0; row < xCount; row++) {
+        if (myGrid[row][column].insideRight()) {
+          draggedColor = myGrid[row][column].brushIndexRight;
+        } else if (myGrid[row][column].insideLeft()) {
+          draggedColor = myGrid[row][column].brushIndexLeft;
+        }
+      }
+    }
+  }
+
+  void mouseDrag() {
+    for (int column = 0; column < yCount; column++) {
+      for (int row = 0; row < xCount; row++) {
+        if (myGrid[row][column].insideRight()) {
+          myGrid[row][column].brushIndexRight = draggedColor;
+        } else if (myGrid[row][column].insideLeft()) {
+          myGrid[row][column].brushIndexLeft = draggedColor;
         }
       }
     }
