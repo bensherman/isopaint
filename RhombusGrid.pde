@@ -40,6 +40,13 @@ class RhombusGrid {
       }
     }
   }
+  void turnWhite() {
+    for (int column = 0; column < yCount; column++) {
+      for (int row = 0; row < xCount; row++) {
+        myGrid[row][column].turnWhite();
+      }
+    }
+  }
 
   void display(int x, int y) {
     myGrid[x][y].display();

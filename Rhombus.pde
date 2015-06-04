@@ -32,6 +32,13 @@ class Rhombus {
     brushIndexRight = colors.size() - 1;
   }
 
+  void turnWhite() {
+    colors.set(0, color(0));
+    colors.set(1, color(100));
+    colors.set(2, color(200));
+    colors.set(3, color(255));
+  }
+
   void turnRed() {
     colors.set(0, color(#801916));
     colors.set(1, color(#AA3C39));

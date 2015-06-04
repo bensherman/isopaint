@@ -72,6 +72,9 @@ void keyPressed() {
   if (key == 'b') {
     grid.turnBlue();
   }
+  if (key == 'w') {
+    grid.turnWhite();
+  }
   if (key == 's') {
     selectOutput("filename to save to (png will be appended): ", "fileSelected");
   }
@@ -96,11 +99,11 @@ void displayHelp() {
   fill(100);
   smooth();
   textSize(20);
-  for(int i = 0; i < helpText.size(); i++){
+  for (int i = 0; i < helpText.size (); i++) {
     text(helpText.get(i), 21, 41 + i * 20);
   }
-  fill(100,100,200);
-    for(int i = 0; i < helpText.size(); i++){
+  fill(100, 100, 200);
+  for (int i = 0; i < helpText.size (); i++) {
     text(helpText.get(i), 20, 40 + i * 20);
   }
   noFill();
