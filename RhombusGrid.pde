@@ -7,7 +7,6 @@ class RhombusGrid {
     offset = tempOffset;
     xCount = int(((largestWidth / smallestOffset) / 4.0) + 2);
     yCount = int((largestHeight / smallestOffset) + 3);
-    println("creating grid", xCount, yCount);
     myGrid = new Rhombus[xCount][yCount];
     for (int column = 0; column < yCount; column++) {
       for (int row = 0; row < xCount; row++) {
@@ -55,7 +54,6 @@ class RhombusGrid {
   }
 
   void mouseClick() {
-    println("clicked!");
     for (int column = 0; column < yCount; column++) {
       for (int row = 0; row < xCount; row++) {
         if (myGrid[row][column].insideRight()) {
@@ -125,8 +123,6 @@ RhombusGrid shrinkOffset(RhombusGrid oldGrid) {
   if (offset < smallestOffset) {
     smallestOffset = offset;
   }
-
-  println("offset, smallestoffset: ", offset, smallestOffset);
   RhombusGrid newGrid = new RhombusGrid();
   newGrid.createGrid(offset);
   for (int column = 0; column < oldGrid.yCount; column++) {

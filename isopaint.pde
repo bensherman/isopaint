@@ -1,156 +1,109 @@
-ArrayList<Triangle> triangles;
-int originalHeight;
-int originalWidth;
-color draggedColor = 0;
-float triangleRatio = 10;
-
+RhombusGrid grid = new RhombusGrid();
+float offset = 30;
+int largestWidth;
+int largestHeight;
+float smallestOffset = offset;
+color draggedColor;
 boolean debug = false;
+ArrayList<String> helpText;
+boolean help = true;
 
 void setup() {
-  noSmooth();
-  noStroke();
   size(500, 500);
+  largestWidth = width;
+  largestHeight = height;
   frame.setResizable(true);
-  triangleRatio = 10;
-  createGrid(triangleRatio);
-  originalHeight = height;
-  originalWidth = width;
-}
-
-void createGrid(float newTriangleRatio) {
-  triangles = new ArrayList<Triangle>();
-  float triangleSize=height/newTriangleRatio;
-  float offset=triangleSize/2;
-  float ax, ay, bx, by, cx, cy;
-  float x = -triangleSize;
-  float y = 0;
-  int row = 0;
-  for (int i=0; i < height + triangleSize; i += triangleSize) {
-    for (int j=0; j < width + triangleSize; j += triangleSize) {
-      ax = x;
-      ay = y + triangleSize;
-      bx = x + triangleSize;
-      by = y + triangleSize;
-      cx = x + triangleSize/2;
-      cy = y;
-      triangles.add(new Triangle(ax, ay, bx, by, cx, cy));
-      x += triangleSize/2;
-      ax = x;
-      ay = y;
-      bx = x + triangleSize;
-      by = y;
-      cx = x + triangleSize/2;
-      cy = y + triangleSize; 
-      triangles.add(new Triangle(ax, ay, bx, by, cx, cy));
-      x += triangleSize/2;
-    }
-    row++;
-    if (row % 2 == 0) {
-      x = -triangleSize;
-    } else {
-      x = -offset;
-    }
-    y += triangleSize;
-  }
-  demoTriangle();
+  grid.createGrid(offset);
+  helpText = new ArrayList<String>();
+  helpText.add("leftclick/rightclick: cycle through shades");
+  helpText.add("click&drag: drag the color around");
+  helpText.add("a: shrink triangles");
+  helpText.add("z: grow triangles");
+  helpText.add("r: color (r)ed");
+  helpText.add("g: color (g)reen");
+  helpText.add("b: color (b)lue");
+  helpText.add("w: black and (w)hite");
+  helpText.add("s: save as png");
+  helpText.add("?: hide/display this help");  
+  helpText.add("");
+  helpText.add("Thanks for playing.");
+  helpText.add("");
+  helpText.add("Love, Ben Sherman");
 }
 
 void draw() {
-  background(100, 100, 100);
-  if (originalWidth != width || originalHeight != height) {
-    if (debug) {
-      println("resizing");
-    }
-    createGrid(triangleRatio);
-    originalWidth = width;
-    originalHeight = height;
-  }  
-  for (int i = 0; i < triangles.size (); i++) {
-    Triangle t = triangles.get(i);
-    t.display();
+  background(128);
+  if (width > largestWidth ) {
+    grid = growGrid(grid);
+    largestWidth = width;
   }
-}
-
-void mousePressed() {
-  for (int i = 0; i < triangles.size (); i++) {
-    Triangle t = triangles.get(i);
-    if (t.cursorInside()) {
-      if (mouseButton == RIGHT && !keyPressed) {
-        t.cycleColors();
-      } else if (mouseButton == LEFT && !keyPressed) {
-        t.cycleColorsReverse();
-      }
-      draggedColor = t.brushIndex;
-    }
+  if (height > largestHeight) {
+    grid = growGrid(grid);
+    largestHeight = height;
   }
-}
-
-void mouseDragged() {
-  for (int i = 0; i < triangles.size (); i++) {
-    Triangle t = triangles.get(i);
-    if (t.cursorInside() && mouseButton == LEFT && keyPressed && keyCode == SHIFT) {
-      t.brushIndex = draggedColor;
-    }
+  grid.displayAll();
+  if (help) {
+    displayHelp();
   }
 }
 
 void keyPressed() {
-  if (debug) {
-    println(key);
-  }  
-  if (key == 's' || key ==  'S') {
-    selectOutput("filename to save to (png will be appended): ", "fileSelected");
-  } else if (key == '-') {
-    triangleRatio *= 1.1;
-    if (debug) {
-      println("-", triangleRatio);
-    }    
-    if (triangleRatio > height/20) {
-      triangleRatio = height/20;
-    } else {
-      createGrid(triangleRatio);
+  if (key == 'a') {
+    if (offset > 5) {
+      offset *= .90;
+      grid = shrinkOffset(grid);
     }
   }
-  if (key == '+') {
-    if (debug) {
-      println("+", triangleRatio);
-    }    
-    triangleRatio *= .9;
-    if (triangleRatio < .5) {
-      triangleRatio = .5;
-    } else {
-      createGrid(triangleRatio);
+  if (key == 'z') {
+    if (offset < 100) {
+      offset *= 1.1;
+      grid = growOffset(grid);
     }
+  }
+  if (key == 'd') {
+    debug = !debug;
   }
   if (key == 'r') {
-    for (int i = 0; i < triangles.size (); i++) {
-      triangles.get(i).turnRed();
-    }
-  }  
+    grid.turnRed();
+  }
   if (key == 'g') {
-    for (int i = 0; i < triangles.size (); i++) {
-      triangles.get(i).turnGreen();
-    }
+    grid.turnGreen();
   }
   if (key == 'b') {
-    for (int i = 0; i < triangles.size (); i++) {
-      triangles.get(i).turnBlue();
-    }
+    grid.turnBlue();
+  }
+  if (key == 's') {
+    selectOutput("filename to save to (png will be appended): ", "fileSelected");
+  }
+  if (key == 'h' || key == '?') {
+    help = !help;
   }
 }
 
-void fileSelected(File selection) {
-  if ( selection != null ) {
-    save(selection.getAbsolutePath() + ".png");
-  }
+void mouseClicked() {
+  grid.mouseClick();
 }
 
-void demoTriangle() {
-  for (int i = 0; i < triangles.size (); i++) {
-    Triangle t = triangles.get(i);
-    if (t.centerTriangle()) {
-      t.cycleColorsReverse();
-    }
+void mouseDragged() {
+  grid.mouseDrag();
+}
+
+void mousePressed() {
+  grid.mousePress();
+}
+
+void displayHelp() {
+  fill(100);
+  smooth();
+  textSize(20);
+  for(int i = 0; i < helpText.size(); i++){
+    text(helpText.get(i), 21, 41 + i * 20);
   }
+  fill(100,100,200);
+    for(int i = 0; i < helpText.size(); i++){
+    text(helpText.get(i), 20, 40 + i * 20);
+  }
+  noFill();
+  noSmooth();
 }
 
