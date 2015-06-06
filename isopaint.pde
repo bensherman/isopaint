@@ -95,6 +95,11 @@ void mousePressed() {
   grid.mousePress();
 }
 
+void fileSelected(File selection) {
+  if ( selection != null ) {
+    save(selection.getAbsolutePath() + ".png");
+  }
+}
 void displayHelp() {
   fill(100);
   smooth();

@@ -85,8 +85,11 @@ class RhombusGrid {
       for (int row = 0; row < xCount; row++) {
         if (myGrid[row][column].insideRight()) {
           draggedColor = myGrid[row][column].brushIndexRight;
+          myGrid[row][column].brushIndexRight = draggedColor;
         } else if (myGrid[row][column].insideLeft()) {
           draggedColor = myGrid[row][column].brushIndexLeft;
+          myGrid[row][column].brushIndexLeft = draggedColor;
+
         }
       }
     }
