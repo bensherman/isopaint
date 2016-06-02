@@ -10,9 +10,10 @@ boolean help = true;
 
 void setup() {
   size(500, 500);
+  smooth();
   largestWidth = width;
   largestHeight = height;
-  frame.setResizable(true);
+  surface.setResizable(true);
   grid.createGrid(offset);
   helpText = new ArrayList<String>();
   helpText.add("leftclick/rightclick: cycle through shades");
@@ -102,7 +103,6 @@ void fileSelected(File selection) {
 }
 void displayHelp() {
   fill(100);
-  smooth();
   textSize(20);
   for (int i = 0; i < helpText.size (); i++) {
     text(helpText.get(i), 21, 41 + i * 20);
@@ -112,6 +112,4 @@ void displayHelp() {
     text(helpText.get(i), 20, 40 + i * 20);
   }
   noFill();
-  noSmooth();
 }
-
